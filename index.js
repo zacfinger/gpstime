@@ -10,8 +10,19 @@
 // Handlebars/Express built following tutorial by Rene Kulik:
 // https://www.kulik.io/2018/01/02/how-to-use-handlebars-with-express/
 
-///////////////////////
-///////////////////////
+//////////////////////////////////////////////
+//////////////////////////////////////////////
+
+TODO:
+// If user is not logged in, create user or sign in page displays
+// If user is logged in, display information about user
+
+// Hotmail Captures
+// https://web.archive.org/web/19971210171246/http://www.hotmail.com:80/
+// 
+
+//////////////////////////////////////////////
+//////////////////////////////////////////////
 
 // Express scaffolding
 // https://expressjs.com/en/starter/generator.html
@@ -75,7 +86,7 @@ app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
 	//res.send('Hello World!');
-	res.render('index');
+	res.render('index.handlebars');
 });
 
 app.post('/createUser', (req, res) => {
