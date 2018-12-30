@@ -10,6 +10,12 @@
 // Handlebars/Express built following tutorial by Rene Kulik:
 // https://www.kulik.io/2018/01/02/how-to-use-handlebars-with-express/
 
+// Followed below tutorial to get session authentication working:
+// https://www.tutorialspoint.com/expressjs/expressjs_authentication.htm
+
+// Ripped Hotmail login page from 1997 via archive.org
+// https://web.archive.org/web/19971210171246/http://www.hotmail.com:80/
+
 //////////////////////////////////////////////
 //////////////////////////////////////////////
 
@@ -17,27 +23,24 @@ TODO:
 // If user is not logged in, create user or sign in page displays
 // If user is logged in, display information about user
 
-// Hotmail Captures
-// https://web.archive.org/web/19971210171246/http://www.hotmail.com:80/
-// 
+// Consider following tutorials:
+// https://www.google.com/search?q=node+js+express+sql+authentication
+// https://www.js-tutorials.com/nodejs-tutorial/node-js-user-authentication-using-mysql-express-js/
 
 //////////////////////////////////////////////
 //////////////////////////////////////////////
+
+// Other Resources
 
 // Express scaffolding
 // https://expressjs.com/en/starter/generator.html
 
 // ExpressJS tutorials
-// https://www.tutorialspoint.com/expressjs/expressjs_cookies.htm
 // https://www.codecademy.com/learn/learn-express
 // https://www.google.com/search?q=express+js+tutorial
 
 // Handlebars tutorials
 https://hackersandslackers.com/handlebars-templating-in-expressjs/
-https://www.kulik.io/2018/01/02/how-to-use-handlebars-with-express/
-
-///// Express + MySQL tutorial
-https://hackernoon.com/setting-up-node-js-with-a-database-part-1-3f2461bdd77f
 
 ///// MySQL + NPM (assumes ubuntu)
 https://medium.com/technoetics/installing-and-setting-up-mysql-with-nodejs-in-ubuntu-75e0c0a693ba
@@ -55,6 +58,7 @@ https://scotch.io/tutorials/build-and-understand-a-simple-nodejs-website-with-us
 
 ///// etc
 https://www.google.com/search?q=how+to+recover+from+an+unproductive+day&oq=how+to+recover+from+unprodu&aqs=chrome.1.69i57j0.6055j1j7&sourceid=chrome&ie=UTF-8
+https://512pixels.net/projects/default-mac-wallpapers-in-5k/
 
 //// other resources
 https://stackoverflow.com/questions/50093144/mysql-8-0-client-does-not-support-authentication-protocol-requested-by-server
@@ -63,7 +67,6 @@ https://blog.bitsrc.io/understanding-asynchronous-javascript-the-event-loop-74cd
 
 //// other notes
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'TmaEVGynMU5H5YuY!'
-https://512pixels.net/projects/default-mac-wallpapers-in-5k/
 mysql -u root -p
 
 */
@@ -74,6 +77,9 @@ const bodyParser = require('body-parser');
 const store = require('./store');
 const app = express();
 
+var session = require('express-session');
+var cookieParser = require('cookie-parser');
+
 var path = require('path');
 app.set('views', path.resolve(__dirname, 'views'));
 
@@ -83,10 +89,33 @@ app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 //app.use(express.static('public'));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(cookieParser());
+app.use(session({secret: "Your secret key"}));
 
 app.get('/', (req, res) => {
 	//res.send('Hello World!');
 	res.render('index.handlebars');
+});
+
+function checkSignIn(req, res, next){
+   if(!req.session.user){
+      console.log("Not signed in");
+      res.redirect('/');
+   }
+   else {
+    console.log(req.session.user);
+    next();
+   }
+}
+/*
+app.get('/protected_page', checkSignIn, function(req, res){
+   res.render('protected_page.handlebars', {id: req.session.user})
+});*/
+
+app.get('/protected_page', checkSignIn, function(req, res){
+   res.render('protected_page.handlebars', {id: req.session.user});
 });
 
 app.post('/createUser', (req, res) => {
@@ -104,10 +133,20 @@ app.post('/login', (req, res) => {
       password: req.body.password
     })
     .then(({ success }) => {
-      if (success) res.sendStatus(200)
+      if (success){ 
+        req.session.user = req.body.username;
+        res.sendStatus(200);
+
+      }
       else res.sendStatus(401)
     })
 })
+
+app.use('/protected_page', function(err, req, res, next){
+console.log(err);
+   //User should be authenticated! Redirect him to log in.
+   res.redirect('/');
+});
 
 app.listen(7555, () => {
   console.log('Server running on http://localhost:7555')
