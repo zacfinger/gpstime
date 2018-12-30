@@ -113,6 +113,14 @@ CreateUser.addEventListener('submit', (e) => {
   const username = CreateUser.querySelector('.username').value
   const password = CreateUser.querySelector('.password').value
   post('/createUser', { username, password })
+  	.then(({ status }) => {
+      if (status === 200){
+      	console.log('login success');
+      	window.location.href = "/protected_page";
+      } 
+      else { alert('login failed'); }
+    })
+  //window.location.href = "/protected_page";
 })
 
 const Login = document.querySelector('.Login')
