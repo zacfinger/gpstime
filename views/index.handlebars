@@ -38,10 +38,10 @@
 				<input type="image" value="Login" src="index_files/home_do_enter.gif" width="80" height="60" border="0">
 				</td>
 		</tr><tr>
-			<td><input type="text" class="username" placeholder="username" size="16"><br>
+			<td><input type="text" class="username" placeholder="zerocool" size="16"><br>
 				<!--<input type="hidden" name="curmbox" value="ACTIVE">--></td>
 			<td>&nbsp;</td>
-			<td><input type="password" class="password" placeholder="password" size="16"></td>
+			<td><input type="password" class="password" placeholder="******" size="16"></td>
 		</tr><!--<tr>
 			<td colspan="3" align="center"><input type="radio" name="frames" value="yes"><img src="index_files/home_lblframes.gif" alt="frames" width="70" height="17" border="0">
 			<input type="radio" name="frames" value="no"><img src="index_files/home_lblnoframes.gif" alt="No frames" width="70" height="17" border="0">
@@ -51,19 +51,39 @@
 	</td>
 </tr><tr>
 	<td colspan="3"><img src="index_files/spacer.gif" alt="-" width="1" height="17"></td>
-</tr><tr>	
-	<td colspan="3"><img src="index_files/home_lblvisit_info.html" alt="Visitors" width="400" vspace="5" height="14" border="0"></td>
+</tr>
+
+<tr>	
+	<td colspan="3"><img src="index_files/home_lblvisit_info.gif" alt="Visitors" width="400" vspace="5" height="14" border="0"></td>
 </tr><tr>
 	<td></td>
-	<td><a href="https://web.archive.org/web/19971210171246/http://www.hotmail.com:80/YouShould.html" onmouseover="window.status='You should!'; return true;" onmouseout="window.status=''; return true;"><img src="index_files/home_do_who.gif" alt="Who Should Sign Up?" width="207" height="41" border="0"></a></td>
-	<td><a href="https://web.archive.org/web/19971210171246/http://www.hotmail.com:80/more.html" onmouseover="window.status='Learn More About Hotmail Services'; return true;" onmouseout="window.status=''; return true;"><img src="index_files/home_do_svcs.html" alt="More About Hotmail's Services" width="170" height="35" border="0"></a></td>
-</tr><tr>
-	<td></td>
-	<td><a href="https://web.archive.org/web/19971210171246/http://207.82.250.9/cgi-bin/linkdirector/svc_agreement/hp" onmouseover="window.status='Service Agreement'; return true;" onmouseout="window.status=''; return true;"><img src="index_files/home_do_sign.gif" alt="Sign Up Here" width="207" height="41" border="0"></a></td>
-	<td><a href="https://web.archive.org/web/19971210171246/http://www.hotmail.com:80/corp.html" onmouseover="window.status='Learn More About Hotmail Corporation'; return true;" onmouseout="window.status=''; return true;"><img src="index_files/home_do_corp1.html" alt="More About Hotmail Corporation" width="170" height="35" border="0"></a></td>
-</tr><tr>
+	<td><!-- Begin New User Registration Form -->
+
+<form class="CreateUser"><table cellspacing="0" cellpadding="0" border="0"><tbody>
+	<tr><td><img src="index_files/home_lbllogin.gif" alt="Login Name:" width="70" height="26" border="0"></td></tr>
+	<tr><td><input type="text" class="username" placeholder="zerocool" size="16"></td></tr>
+
+	<tr><td><img src="index_files/home_lblpasswd.gif" alt="Password:" width="70" height="26" border="0"></td></tr>
+	<tr><td><input type="password" class="password" placeholder="******" size="16"></td></tr>
+
+<tr>
+	<td><img src="index_files/spacer.gif" alt="-" width="1" height="15"></td>
+</tr>
+
+	<tr><td>
+		<input type="image" value="Create" src="index_files/home_do_sign.gif" width="207" height="41" border="0">
+	</td></tr>
+
+</tbody></table></form>
+
+		<!-- /end New User Registration Row -->
+	</td>
+	<td valign="top"><a href="https://github.com/zacfinger/gpstime" target="_blank"><img src="index_files/home_do_svcs.gif" alt="About GPS Calendrier" width="170" height="35" border="0"></a></td>
+</tr><!--<tr>
 	<td colspan="3"><img src="index_files/spacer.gif" alt="-" width="1" height="15"></td>
-</tr><tr>
+</tr>-->
+
+<tr>
 	<td colspan="3"><img src="index_files/home_lblawards.gif" alt="Awards" width="400" vspace="7" height="14"></td>
 </tr><tr>
 	<td></td>
@@ -81,19 +101,19 @@
 </form>
 -->
 <a href="http://zacfinger.com" target="_blank">
-<img src="index_files/c9697.gif" alt="Copyright 1996-1997" width="189" height="16" border="0"></a>
+<img src="index_files/c9697.gif" alt="Copyright CCXXVII-present" width="189" height="16" border="0"></a>
 				<script>
 				
     /*
 This code was moved out of app.js 
-    *//*
+    */
   const CreateUser = document.querySelector('.CreateUser')
 CreateUser.addEventListener('submit', (e) => {
   e.preventDefault()
   const username = CreateUser.querySelector('.username').value
   const password = CreateUser.querySelector('.password').value
   post('/createUser', { username, password })
-})*/
+})
 
 const Login = document.querySelector('.Login')
 Login.addEventListener('submit', (e) => {
@@ -107,7 +127,7 @@ Login.addEventListener('submit', (e) => {
       	console.log('login success');
       	window.location.href = "/protected_page";
       } 
-      else { console.log('login failed'); }
+      else { alert('login failed'); }
     })
 })
 
@@ -123,8 +143,6 @@ function post (path, data) {
 }
 
 </script>
-
-
 
 </body></html>
 <!--
