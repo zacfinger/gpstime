@@ -1,0 +1,30 @@
+{
+  "name": "gpstime",
+  "version": "0.0.1",
+  "description": "This is a fully-featured calendar app that only displays dates in the French Revolutionary Calendar",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zacfinger/gpstime.git"
+  },
+  "keywords": [
+    "calendar",
+    "metric-time"
+  ],
+  "author": "Zac Finger",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/zacfinger/gpstime/issues"
+  },
+  "homepage": "https://github.com/zacfinger/gpstime#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "knex": "^0.16.3",
+    "mysql": "^2.16.0"
+  }
+}
