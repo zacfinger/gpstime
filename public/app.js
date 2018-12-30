@@ -1,3 +1,6 @@
+// the below code is not called from anywhere
+// instead it is included 'inline' in index.handlebars
+
 const CreateUser = document.querySelector('.CreateUser')
 CreateUser.addEventListener('submit', (e) => {
   e.preventDefault()

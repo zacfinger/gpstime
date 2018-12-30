@@ -3,3 +3,4 @@ public/images
 todo.js
 old
 node_modules
+knexfile.js
