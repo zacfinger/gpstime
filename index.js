@@ -16,6 +16,9 @@
 // Ripped Hotmail login page from 1997 via archive.org
 // https://web.archive.org/web/19971210171246/http://www.hotmail.com:80/
 
+// Began following below tutorial to execute CRUD operations:
+// http://zetcode.com/javascript/knex/
+
 //////////////////////////////////////////////
 //////////////////////////////////////////////
 
