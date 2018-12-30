@@ -82,6 +82,7 @@ var cookieParser = require('cookie-parser');
 
 var path = require('path');
 app.set('views', path.resolve(__dirname, 'views'));
+app.use(express.static('views'));// this makes images work
 
 // Register Handlebars view engine
 app.engine('handlebars', exphbs());
