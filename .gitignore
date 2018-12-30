@@ -1,5 +1,5 @@
 .DS_Store
-img
+public/images
 todo.js
 old
 node_modules
