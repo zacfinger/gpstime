@@ -7,11 +7,14 @@
 // SQL/Knex functionality built in accordance with tutorial by Robert Tod:
 // https://hackernoon.com/setting-up-node-js-with-a-database-part-1-3f2461bdd77f
 
-// Handlebars/Express built following tutorial by Rene Kulik:
+// Handlebars/Express built following below tutorials:
 // https://www.kulik.io/2018/01/02/how-to-use-handlebars-with-express/
+// https://hackersandslackers.com/handlebars-templating-in-expressjs/
 
-// Followed below tutorial to get session authentication working:
+// Followed below tutorial(s) to get session authentication working:
 // https://www.tutorialspoint.com/expressjs/expressjs_authentication.htm
+// https://www.google.com/search?q=node+js+express+sql+authentication
+// https://www.js-tutorials.com/nodejs-tutorial/node-js-user-authentication-using-mysql-express-js/
 
 // Ripped Hotmail login page from 1997 via archive.org
 // https://web.archive.org/web/19971210171246/http://www.hotmail.com:80/
@@ -20,16 +23,18 @@
 // http://zetcode.com/javascript/knex/
 // https://knexjs.org/#Schema-Building
 
+// Following answer on StackOverflow assisted with Handlebar loops:
+// https://stackoverflow.com/questions/13710984/node-js-express-handlebars-get-elements-of-an-array
+
+// Attempted asynchronous operations per the suggestion here: 
+// https://stackoverflow.com/questions/20603800/how-to-do-select-from-using-knex-in-javascript
+
 //////////////////////////////////////////////
 //////////////////////////////////////////////
 
-TODO:
+// TODO:
 // Modify protected_page to display all event objects associated to a given user
 // Create UI elements such that user can execute CRUD operations on events
-
-// Consider following tutorials:
-// https://www.google.com/search?q=node+js+express+sql+authentication
-// https://www.js-tutorials.com/nodejs-tutorial/node-js-user-authentication-using-mysql-express-js/
 
 //////////////////////////////////////////////
 //////////////////////////////////////////////
@@ -42,9 +47,6 @@ TODO:
 // ExpressJS tutorials
 // https://www.codecademy.com/learn/learn-express
 // https://www.google.com/search?q=express+js+tutorial
-
-// Handlebars tutorials
-https://hackersandslackers.com/handlebars-templating-in-expressjs/
 
 ///// MySQL + NPM (assumes ubuntu)
 https://medium.com/technoetics/installing-and-setting-up-mysql-with-nodejs-in-ubuntu-75e0c0a693ba
@@ -60,7 +62,6 @@ https://medium.com/@kevinhsu_83500/user-authentication-with-node-js-and-mongodb-
 ///// Cloud authentication services
 https://scotch.io/tutorials/build-and-understand-a-simple-nodejs-website-with-user-authentication
 
-///// etc
 //// other resources
 http://book.mixu.net/node/
 https://stackoverflow.com/questions/50093144/mysql-8-0-client-does-not-support-authentication-protocol-requested-by-server
@@ -120,41 +121,38 @@ function checkSignIn(req, res, next){
    }
 }
 
-function get_User_ID( callback ) {
+function get_User_ID( user_ID , callback ) {
 
-  callback(3); // make this pulled from SQL somehow
+  knex.from('user').select("id").where('username','=',user_ID)
+  .then((rows) => {
+        for (row of rows) {
+          // should only be 1 row...must find better way to do this
+          temp = `${row['id']}`;
+          console.log("user id is " + temp);
+          callback(temp);
+        }
+    })
+  /*
+    .catch((err) => { console.log( err); throw err })
+    .finally(() => {
+        knex.destroy();
+        res.render('protected_page.handlebars', {id: temp});
+  });*/
+
+  //callback(3); // make this pulled from SQL somehow
   /*var project_names=[];
   knex('projects').select('name').then(function (a) { 
      project_names.push(a);
      callback(project_names);
   })*/
 
-  /*
-  knex.from('user').select("id").where('username','=',req.session.user)
-  .then((rows) => {
-        for (row of rows) {
-          temp = `${row['id']}`;
-          console.log(temp);
-        }
-    })
-    .catch((err) => { console.log( err); throw err })
-    .finally(() => {
-        knex.destroy();
-        res.render('protected_page.handlebars', {id: temp});
-    });
-
-*/
 }
 
 app.get('/protected_page', checkSignIn, function(req, res){
 
-  // attempting asynchronous operations 
-  // per the suggestion here: 
-  // https://stackoverflow.com/questions/20603800/how-to-do-select-from-using-knex-in-javascript
-
   const events = [];
   
-  get_User_ID( function(userID){
+  get_User_ID( req.session.user , function(userID){
 
     knex.from('events').select("title", "begin_time").where('id', '=', userID)
       .then((rows) => {
