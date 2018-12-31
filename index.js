@@ -168,7 +168,7 @@ app.get('/protected_page', checkSignIn, function(req, res){
       .catch((err) => { console.log( err); throw err })
       .finally(() => {
           knex.destroy();
-          res.render('protected_page.handlebars', { id: events })
+          res.render('protected_page.handlebars', { eventList: events , id: userID })
       });
 
   });
