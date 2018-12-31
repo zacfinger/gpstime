@@ -126,15 +126,27 @@ app.get('/protected_page', checkSignIn, function(req, res){
   // per the suggestion here: 
   // https://stackoverflow.com/questions/20603800/how-to-do-select-from-using-knex-in-javascript
 
-  // sample events
-const events = [
-  { title: "Job Interview", begin_time: "2019-01-01 23:00:00", end_time: "2015-10-21 23:30:00", id: "4" },
-  { title: "CS 127", begin_time: "2019-12-20 09:00:00", end_time: "2019-12-20 10:00:00", id: "4" },
-  { title: "Dentist", begin_time: "2015-10-21 18:00:00", end_time: "2015-10-21 19:00:00", id: "4" }
-]
+  const events = [];
+  var userID = 3; // make this pulled from SQL somehow
 
-  res.render('protected_page.handlebars', { id: events })
+  knex.from('events').select("title", "begin_time").where('id', '=', userID)
+    .then((rows) => {
+        for (row of rows) {
+            var tempArr = [];
+            tempArr["title"] = `${row['title']}`;
+            tempArr["begin_time"] = `${row['begin_time']}`;
+            //console.log(tempArr["title"] + " which begins at " + tempArr["begin_time"]);
+            //console.log(`${row['title']} ${row['begin_time']}`);
+            events.push(tempArr);
+        }
+    })
+    .catch((err) => { console.log( err); throw err })
+    .finally(() => {
+        knex.destroy();
+        res.render('protected_page.handlebars', { id: events })
+    });
 
+  
 /*
   knex.from('user').select("id").where('username','=',req.session.user)
   .then((rows) => {
