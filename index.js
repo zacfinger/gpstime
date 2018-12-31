@@ -120,34 +120,16 @@ function checkSignIn(req, res, next){
    }
 }
 
-app.get('/protected_page', checkSignIn, function(req, res){
+function get_User_ID( callback ) {
 
-  // attempting asynchronous operations 
-  // per the suggestion here: 
-  // https://stackoverflow.com/questions/20603800/how-to-do-select-from-using-knex-in-javascript
+  callback(3); // make this pulled from SQL somehow
+  /*var project_names=[];
+  knex('projects').select('name').then(function (a) { 
+     project_names.push(a);
+     callback(project_names);
+  })*/
 
-  const events = [];
-  var userID = 3; // make this pulled from SQL somehow
-
-  knex.from('events').select("title", "begin_time").where('id', '=', userID)
-    .then((rows) => {
-        for (row of rows) {
-            var tempArr = [];
-            tempArr["title"] = `${row['title']}`;
-            tempArr["begin_time"] = `${row['begin_time']}`;
-            //console.log(tempArr["title"] + " which begins at " + tempArr["begin_time"]);
-            //console.log(`${row['title']} ${row['begin_time']}`);
-            events.push(tempArr);
-        }
-    })
-    .catch((err) => { console.log( err); throw err })
-    .finally(() => {
-        knex.destroy();
-        res.render('protected_page.handlebars', { id: events })
-    });
-
-  
-/*
+  /*
   knex.from('user').select("id").where('username','=',req.session.user)
   .then((rows) => {
         for (row of rows) {
@@ -162,6 +144,38 @@ app.get('/protected_page', checkSignIn, function(req, res){
     });
 
 */
+}
+
+app.get('/protected_page', checkSignIn, function(req, res){
+
+  // attempting asynchronous operations 
+  // per the suggestion here: 
+  // https://stackoverflow.com/questions/20603800/how-to-do-select-from-using-knex-in-javascript
+
+  const events = [];
+  
+  get_User_ID( function(userID){
+
+    knex.from('events').select("title", "begin_time").where('id', '=', userID)
+      .then((rows) => {
+          for (row of rows) {
+              var tempArr = [];
+              tempArr["title"] = `${row['title']}`;
+              tempArr["begin_time"] = `${row['begin_time']}`;
+              //console.log(tempArr["title"] + " which begins at " + tempArr["begin_time"]);
+              //console.log(`${row['title']} ${row['begin_time']}`);
+              events.push(tempArr);
+          }
+      })
+      .catch((err) => { console.log( err); throw err })
+      .finally(() => {
+          knex.destroy();
+          res.render('protected_page.handlebars', { id: events })
+      });
+
+  });
+
+//////////////////////////////////////
   
 });
 
