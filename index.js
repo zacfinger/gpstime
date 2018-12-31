@@ -119,27 +119,23 @@ function checkSignIn(req, res, next){
     next();
    }
 }
-/*
-app.get('/protected_page', checkSignIn, function(req, res){
-   res.render('protected_page.handlebars', {id: req.session.user})
-});*/
-/*
-function get_id( callback , user_name ) {
-  var id;
-  knex('user').select('id').where('username','=',user_name).then(function (a) { 
-     id = a;
-     callback(id);
-  })
-}*/
 
 app.get('/protected_page', checkSignIn, function(req, res){
-
-  var temp;
 
   // attempting asynchronous operations 
-  // per the suggestion here: https://stackoverflow.com/questions/20603800/how-to-do-select-from-using-knex-in-javascript
+  // per the suggestion here: 
+  // https://stackoverflow.com/questions/20603800/how-to-do-select-from-using-knex-in-javascript
 
-  
+  // sample events
+const events = [
+  { title: "Job Interview", begin_time: "2019-01-01 23:00:00", end_time: "2015-10-21 23:30:00", id: "4" },
+  { title: "CS 127", begin_time: "2019-12-20 09:00:00", end_time: "2019-12-20 10:00:00", id: "4" },
+  { title: "Dentist", begin_time: "2015-10-21 18:00:00", end_time: "2015-10-21 19:00:00", id: "4" }
+]
+
+  res.render('protected_page.handlebars', { id: events })
+
+/*
   knex.from('user').select("id").where('username','=',req.session.user)
   .then((rows) => {
         for (row of rows) {
@@ -153,8 +149,7 @@ app.get('/protected_page', checkSignIn, function(req, res){
         res.render('protected_page.handlebars', {id: temp});
     });
 
-  //console.log("temp is now " + temp);
-
+*/
   
 });
 
