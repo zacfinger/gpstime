@@ -35,6 +35,11 @@
 // TODO:
 // Modify protected_page to display all event objects associated to a given user
 // Create UI elements such that user can execute CRUD operations on events
+// call REST API: https://stackoverflow.com/questions/36975619/how-to-call-a-rest-web-service-api-from-javascript
+
+// Consider following resources:
+// https://stackoverflow.com/questions/30767928/accesing-handlebars-variable-via-javascript
+// https://www.google.com/search?q=handlebars+variable+in+javascript
 
 //////////////////////////////////////////////
 //////////////////////////////////////////////
@@ -176,6 +181,10 @@ app.get('/protected_page', checkSignIn, function(req, res){
 //////////////////////////////////////
   
 });
+
+app.post('/updateEvent', (req, res) => {
+  console.log('API successfully called!');
+})
 
 app.post('/createUser', (req, res) => {
   store

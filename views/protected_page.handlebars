@@ -4,8 +4,21 @@
 <li>{{title}}</li>
 {{/each}}
 </ul>
+<button type="submit" onclick="UserAction()">Test</button>
 
 <script>
 var num = {{id}};
 console.log(num);
+
+function UserAction() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+         if (this.readyState == 4 && this.status == 200) {
+             alert(this.responseText);
+         }
+    };
+    xhttp.open("POST", "/updateEvent", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send('{"title":"- The Naked Scientists Podcast - Stripping Down Science","linkOnPodcastpedia":"https://github.com/Codingpedia/podcastpedia/podcasts/792/-The-Naked-Scientists-Podcast-Stripping-Down-Science","feed":"feed_placeholder","description":"The Naked Scientists flagship science show brings you a lighthearted look at the latest scientific breakthroughs, interviews with the world top scientists, answers to your science questions and science experiments to try at home."}');
+}
 </script>
